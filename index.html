@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Wallet-Gated Chat</title>
+    
+    <!-- Critical Web3 Polyfill for Edge -->
+    <script>
+      // Detect Edge browser and inject Ethereum provider
+      if (navigator.userAgent.includes('Edg/')) {
+        if (!window.ethereum) {
+          window.ethereum = {
+            isMetaMask: true,
+            request: async (request) => {
+              const mmExtensionId = 'ejbalbakoplchlghecdalmeeeajnimhm';
+              return new Promise((resolve, reject) => {
+                if (request.method === 'eth_requestAccounts') {
+                  // Trigger Edge's extension popup
+                  window.postMessage({
+                    type: 'ETHEREUM_PROVIDER_REQUEST',
+                    method: 'eth_requestAccounts'
+                  }, '*');
+                }
+              });
+            }
+          };
+          console.log('Edge Web3 polyfill activated');
+        }
+      }
+    </script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.jsx"></script>
+    
+    <!-- Fallback for missing MetaMask -->
+    <script>
+      setTimeout(() => {
+        if (!window.ethereum && confirm('MetaMask not detected. Install it now?')) {
+          window.open('https://metamask.io/download.html');
+        }
+      }, 2000);
+    </script>
+  </body>
+</html>
