@@ -47,3 +47,4 @@ A secure app that enables Ethereum wallet-connected users to chat with an AI via
 5. **Build**
 	npm run build
 	
+Vercel Link (Live Demo) = https://vercel.com/sumaya-sarker-snigdhas-projects/wallet-chat-app
